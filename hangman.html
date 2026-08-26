@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funny Pastel Hangman • Designed by Paniz (@panizteacher)</title>
+  <meta name="description" content="Funny Pastel Hangman game across CEFR levels A1-C2 with cute Bob the Marshmallow. Designed by Paniz (panizteacher).">
+  <meta name="author" content="Paniz (panizteacher)">
+  <meta property="og:title" content="Funny Pastel Hangman • Designed by Paniz">
+  <meta property="og:url" content="https://panizteacher.com/hangman">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎈</text></svg>">
+</head>
+<body class="theme-pink-purple-cyan">
+
+  <!-- Ambient Floating Background Blobs (Pink, Purple & Cyan) -->
+  <div class="ambient-background">
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+    <div class="ambient-blob blob-4"></div>
+  </div>
+
+  <!-- Particle Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-container">
+    
+    <!-- ==========================================
+         TOP WEBSITE ADDRESS / DOMAIN BAR
+    ========================================== -->
+    <div class="address-browser-bar">
+      <div class="browser-dots">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <div class="browser-address-field" id="copy-address-btn" title="Click to copy official website address">
+        <span class="lock-icon">🔒</span>
+        <span class="url-protocol">https://</span>
+        <span class="url-host">panizteacher.com</span>
+        <span class="url-path">/hangman</span>
+        <button class="copy-url-mini-btn" id="copy-url-btn">📋 Copy Link</button>
+      </div>
+      <div class="top-game-switcher">
+        <a href="index.html" class="game-switch-tab">🔍 Who Am I?</a>
+        <a href="hangman.html" class="game-switch-tab active">🪅 Hangman</a>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MAIN HEADER & BRANDING (PANIZ / PANIZTEACHER)
+    ========================================== -->
+    <header class="main-header">
+      <div class="header-top">
+        <div class="brand-section">
+          <div class="logo-badge" style="background: linear-gradient(135deg, #ffd1dc, #d8bbff, #a0c4ff);">🎈</div>
+          <div class="brand-text">
+            <div class="author-tag-banner" style="background: linear-gradient(135deg, #ffd1dc, #e2d4f0, #cbf3f0); border-color: #d8bbff;">
+              <span class="sparkle-icon">🌸</span>
+              <span>WEB DESIGNER: <strong>PANIZ</strong> • <a href="https://panizteacher.com" target="_blank" style="color: #4361ee; text-decoration: none; font-weight: 800;">@panizteacher</a></span>
+              <span class="sparkle-icon">🌸</span>
+            </div>
+            <h1>Funny Pastel Hangman</h1>
+            <p class="brand-subtitle">
+              Save Bob the Marshmallow! • CEFR Levels A1 to C2 • Pink, Purple & Cyan Pastel Suite
+            </p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button id="sound-toggle-btn" class="icon-btn" title="Toggle Sound Effects">
+            <span id="sound-icon">🔊</span> Sound
+          </button>
+          <button id="stats-modal-btn" class="icon-btn" title="View Game Stats">
+            📊 Stats
+          </button>
+          <button id="new-word-btn" class="icon-btn primary" title="Load New Word">
+            🔄 New Word
+          </button>
+        </div>
+      </div>
+
+      <!-- HUD Stats Banner -->
+      <div class="stats-banner">
+        <div class="stat-item">
+          <div class="stat-icon">🎈</div>
+          <div class="stat-info">
+            <span class="stat-label">Balloons Left</span>
+            <span id="hud-lives" class="stat-value" style="color: #f72585;">6 / 6</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-info">
+            <span class="stat-label">Win Streak</span>
+            <span id="hud-streak" class="stat-value" style="color: #4361ee;">0</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-info">
+            <span class="stat-label">Words Won</span>
+            <span id="hud-wins" class="stat-value" style="color: #2d6a4f;">0</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon">🎓</div>
+          <div class="stat-info">
+            <span class="stat-label">Level</span>
+            <span id="hud-level" class="stat-value">All</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==========================================
+         CEFR LEVEL NAVIGATOR (A1 -> C2)
+    ========================================== -->
+    <nav class="cefr-navigator">
+      <div class="nav-title">
+        <span>📚 Select CEFR English Difficulty</span>
+        <span class="nav-hint">From funny everyday words (A1) to hilarious tongue-twisters (C2)</span>
+      </div>
+      <div class="level-pills">
+        <button class="level-pill active" data-level="All">
+          <span class="pill-tag">ALL</span>
+          <span class="pill-desc">Full Mix</span>
+        </button>
+        <button class="level-pill" data-level="A1">
+          <span class="pill-tag">A1</span>
+          <span class="pill-desc">Beginner</span>
+        </button>
+        <button class="level-pill" data-level="A2">
+          <span class="pill-tag">A2</span>
+          <span class="pill-desc">Elementary</span>
+        </button>
+        <button class="level-pill" data-level="B1">
+          <span class="pill-tag">B1</span>
+          <span class="pill-desc">Intermediate</span>
+        </button>
+        <button class="level-pill" data-level="B2">
+          <span class="pill-tag">B2</span>
+          <span class="pill-desc">Upper-Int</span>
+        </button>
+        <button class="level-pill" data-level="C1">
+          <span class="pill-tag">C1</span>
+          <span class="pill-desc">Advanced</span>
+        </button>
+        <button class="level-pill" data-level="C2">
+          <span class="pill-tag">C2</span>
+          <span class="pill-desc">Mastery</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ==========================================
+         MAIN HANGMAN STAGE
+    ========================================== -->
+    <main class="hangman-stage">
+      
+      <!-- Character Stage (Bob the Marshmallow & Balloons SVG) -->
+      <div class="bob-stage-card">
+        <div class="arena-meta">
+          <span id="word-level-badge" class="badge-level">CEFR A1</span>
+          <span id="word-category-badge" class="badge-type">🍔 Food & Fun</span>
+          <span class="badge-creator-pill">🌸 by Paniz (@panizteacher)</span>
+        </div>
+
+        <div class="character-canvas-wrapper">
+          <svg id="bob-svg" viewBox="0 0 320 300" class="bob-svg">
+            <!-- Bob SVG drawn dynamically by JavaScript -->
+          </svg>
+        </div>
+
+        <!-- Lives Visual Indicator -->
+        <div class="lives-indicator" id="lives-indicator">
+          <span class="balloon-heart">🎈</span>
+          <span class="balloon-heart">🎈</span>
+          <span class="balloon-heart">🎈</span>
+          <span class="balloon-heart">🎈</span>
+          <span class="balloon-heart">🎈</span>
+          <span class="balloon-heart">🎈</span>
+        </div>
+      </div>
+
+      <!-- Word Guessing Area & Interactive Keyboard -->
+      <div class="hangman-interactive-card">
+        
+        <!-- Paniz Teacher's Witty Clue Box -->
+        <div class="teacher-clue-card">
+          <div class="teacher-clue-header">
+            <span class="teacher-avatar">👩‍🏫</span>
+            <div class="teacher-info">
+              <span class="teacher-name">Paniz Teacher's Witty Hint</span>
+              <span class="teacher-handle">@panizteacher</span>
+            </div>
+          </div>
+          <p id="teacher-hint-text" class="teacher-hint-text">
+            Hint loading...
+          </p>
+        </div>
+
+        <!-- Word Blanks Tiles -->
+        <div class="word-blanks-container" id="word-blanks-container">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Actions / Hints -->
+        <div class="hangman-hint-bar">
+          <button id="vowel-hint-btn" class="hint-pill-btn">💡 Reveal a Vowel</button>
+          <span class="keyboard-helper-text">⌨️ Tip: You can type letters directly on your keyboard!</span>
+        </div>
+
+        <!-- On-Screen Pastel Keyboard (Pink, Purple, Cyan) -->
+        <div class="pastel-keyboard" id="pastel-keyboard">
+          <!-- Populated by JS -->
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- ==========================================
+         FOOTER
+    ========================================== -->
+    <footer class="main-footer">
+      <div class="footer-left">
+        <span>🎈 <strong>Funny Pastel Hangman</strong></span>
+        <span class="footer-separator">•</span>
+        <span>Web Designer: <span class="footer-author">Paniz</span> (<a href="https://panizteacher.com" target="_blank" style="color: #4361ee; text-decoration: none; font-weight: 700;">@panizteacher</a>)</span>
+      </div>
+      <div class="footer-right">
+        <a href="https://panizteacher.com" class="footer-link" target="_blank" rel="noopener">panizteacher.com</a>
+        <span class="footer-separator">•</span>
+        <span>CEFR A1–C2 Vocabulary Learning</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="app-toast" class="app-toast">Link copied to clipboard! ✨</div>
+
+  <!-- ==========================================
+       MODAL 1: VICTORY MODAL (BOB SAVED!)
+  ========================================== -->
+  <div id="victory-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-emoji-header">🎉🥳</div>
+      <h2 class="modal-title">Hooray! You Saved Bob!</h2>
+      <div id="modal-victory-word" style="font-size: 2rem; font-weight: 800; font-family: 'Fredoka'; color: #f72585; margin: 6px 0;">BANANA</div>
+      
+      <div class="modal-fact-box" style="border-color: #d8bbff; background: linear-gradient(135deg, #fff0f5, #f3e8ff, #e8f4f8);">
+        <h4>💡 Paniz Teacher's Fun Commentary</h4>
+        <p id="modal-victory-comment">Great job! You guessed the word flawlessly.</p>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center; margin-top: 14px;">
+        <button id="modal-victory-next-btn" class="submit-guess-btn" style="padding: 12px 32px;">Next Word 🚀</button>
+        <button id="modal-victory-close-btn" class="next-card-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 2: DEFEAT MODAL (PUDDING SPLAT!)
+  ========================================== -->
+  <div id="defeat-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-emoji-header">🍮💥</div>
+      <h2 class="modal-title" style="background: linear-gradient(135deg, #ff758f, #b5179e); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Splaaaaat! Bob Landed in Pudding!</h2>
+      <p style="font-size: 0.95rem; color: var(--text-muted);">All 6 balloons popped! Bob is enjoying strawberry pudding now.</p>
+      
+      <div style="margin: 12px 0;">
+        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-light); text-transform: uppercase;">The Secret Word Was:</span>
+        <div id="modal-defeat-word" style="font-size: 2rem; font-weight: 800; font-family: 'Fredoka'; color: #4361ee;">DISCOMBOBULATE</div>
+      </div>
+
+      <div class="modal-fact-box">
+        <h4>💡 Paniz Teacher's Note</h4>
+        <p id="modal-defeat-comment">Don't worry, even master linguists miss tricky words sometimes! Try again!</p>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center; margin-top: 14px;">
+        <button id="modal-defeat-retry-btn" class="submit-guess-btn" style="padding: 12px 32px;">Try Another Word 🎈</button>
+        <button id="modal-defeat-close-btn" class="next-card-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 3: STATS MODAL
+  ========================================== -->
+  <div id="stats-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-emoji-header">📊</div>
+      <h2 class="modal-title">Hangman Mastery Stats</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+        <div style="background: var(--pink-50); border: 1.5px solid var(--pink-200); border-radius: 12px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">TOTAL WINS</div>
+          <div id="stat-total-wins" style="font-size: 1.6rem; font-weight: 800; font-family: 'Fredoka'; color: var(--pink-500);">0</div>
+        </div>
+        <div style="background: var(--blue-50); border: 1.5px solid var(--blue-200); border-radius: 12px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">MAX STREAK</div>
+          <div id="stat-max-streak" style="font-size: 1.6rem; font-weight: 800; font-family: 'Fredoka'; color: var(--blue-500);">0</div>
+        </div>
+        <div style="background: var(--pastel-mint); border: 1.5px solid #a7f3d0; border-radius: 12px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">PUDDING SPLATS</div>
+          <div id="stat-total-losses" style="font-size: 1.6rem; font-weight: 800; font-family: 'Fredoka'; color: #065f46;">0</div>
+        </div>
+      </div>
+
+      <h4 style="text-align: left; margin-top: 10px; font-size: 0.95rem;">CEFR Level Wins</h4>
+      <div id="stat-levels-breakdown" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+        <!-- Filled by JS -->
+      </div>
+
+      <button id="stats-close-btn" class="submit-guess-btn" style="margin-top: 14px;">Back to Game</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/hangman-data.js"></script>
+  <script src="js/hangman.js"></script>
+  <script>
+    // Front Controller for hangman.html
+    document.addEventListener("DOMContentLoaded", () => {
+      const hangman = window.hangmanEngine;
+      const audio = window.soundEngine;
+
+      const bobSvg = document.getElementById("bob-svg");
+      const wordBlanksContainer = document.getElementById("word-blanks-container");
+      const pastelKeyboard = document.getElementById("pastel-keyboard");
+      const teacherHintText = document.getElementById("teacher-hint-text");
+      const wordLevelBadge = document.getElementById("word-level-badge");
+      const wordCategoryBadge = document.getElementById("word-category-badge");
+      const livesIndicator = document.getElementById("lives-indicator");
+
+      const hudLives = document.getElementById("hud-lives");
+      const hudStreak = document.getElementById("hud-streak");
+      const hudWins = document.getElementById("hud-wins");
+      const hudLevel = document.getElementById("hud-level");
+
+      const levelPills = document.querySelectorAll(".level-pill");
+      const newWordBtn = document.getElementById("new-word-btn");
+      const vowelHintBtn = document.getElementById("vowel-hint-btn");
+      const soundToggleBtn = document.getElementById("sound-toggle-btn");
+      const soundIcon = document.getElementById("sound-icon");
+
+      const victoryModal = document.getElementById("victory-modal");
+      const modalVictoryWord = document.getElementById("modal-victory-word");
+      const modalVictoryComment = document.getElementById("modal-victory-comment");
+      const modalVictoryNextBtn = document.getElementById("modal-victory-next-btn");
+      const modalVictoryCloseBtn = document.getElementById("modal-victory-close-btn");
+
+      const defeatModal = document.getElementById("defeat-modal");
+      const modalDefeatWord = document.getElementById("modal-defeat-word");
+      const modalDefeatComment = document.getElementById("modal-defeat-comment");
+      const modalDefeatRetryBtn = document.getElementById("modal-defeat-retry-btn");
+      const modalDefeatCloseBtn = document.getElementById("modal-defeat-close-btn");
+
+      const statsModalBtn = document.getElementById("stats-modal-btn");
+      const statsModal = document.getElementById("stats-modal");
+      const statsCloseBtn = document.getElementById("stats-close-btn");
+
+      const copyAddressBtn = document.getElementById("copy-address-btn");
+      const copyUrlBtn = document.getElementById("copy-url-btn");
+      const appToast = document.getElementById("app-toast");
+
+      // Initialize
+      hangman.initGame("All");
+      renderRound();
+      updateAudioIcon();
+
+      function renderRound() {
+        const wordObj = hangman.currentWordObj;
+        if (!wordObj) return;
+
+        wordLevelBadge.textContent = `CEFR ${wordObj.level}`;
+        wordCategoryBadge.textContent = `${wordObj.emoji || "✨"} ${wordObj.category}`;
+        teacherHintText.innerHTML = `<strong>${wordObj.hint}</strong>`;
+
+        renderBlanks();
+        renderKeyboard();
+        renderBobCharacter(bobSvg, hangman.livesLeft);
+        renderLivesIndicator();
+        renderHUD();
+      }
+
+      function renderBlanks() {
+        wordBlanksContainer.innerHTML = "";
+        const word = hangman.currentWord;
+
+        for (let char of word) {
+          const tile = document.createElement("div");
+          if (char === " ") {
+            tile.className = "letter-tile space";
+          } else if (hangman.guessedLetters.has(char) || hangman.isGameOver) {
+            tile.className = "letter-tile revealed";
+            tile.textContent = char;
+            if (!hangman.guessedLetters.has(char)) {
+              tile.style.color = "#ff758f"; // Unsolved letter revealed on game over
+            }
+          } else {
+            tile.className = "letter-tile";
+            tile.textContent = "_";
+          }
+          wordBlanksContainer.appendChild(tile);
+        }
+      }
+
+      function renderLivesIndicator() {
+        livesIndicator.innerHTML = "";
+        for (let i = 0; i < hangman.maxLives; i++) {
+          const heart = document.createElement("span");
+          heart.className = `balloon-heart ${i < hangman.livesLeft ? "active" : "popped"}`;
+          heart.textContent = i < hangman.livesLeft ? "🎈" : "💥";
+          livesIndicator.appendChild(heart);
+        }
+      }
+
+      function renderKeyboard() {
+        pastelKeyboard.innerHTML = "";
+        const rows = [
+          ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+          ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+          ["Z", "X", "C", "V", "B", "N", "M"]
+        ];
+
+        rows.forEach(row => {
+          const rowDiv = document.createElement("div");
+          rowDiv.className = "keyboard-row";
+
+          row.forEach(letter => {
+            const btn = document.createElement("button");
+            btn.className = "key-btn";
+            btn.textContent = letter;
+
+            if (hangman.guessedLetters.has(letter)) {
+              btn.disabled = true;
+              if (hangman.currentWord.includes(letter)) {
+                btn.classList.add("correct");
+              } else {
+                btn.classList.add("wrong");
+              }
+            }
+
+            btn.addEventListener("click", () => handleGuess(letter));
+            rowDiv.appendChild(btn);
+          });
+
+          pastelKeyboard.appendChild(rowDiv);
+        });
+      }
+
+      function handleGuess(letter) {
+        if (hangman.isGameOver) return;
+        const res = hangman.guessLetter(letter);
+        if (!res) return;
+
+        renderBlanks();
+        renderKeyboard();
+        renderBobCharacter(bobSvg, hangman.livesLeft);
+        renderLivesIndicator();
+        renderHUD();
+
+        if (res.won) {
+          setTimeout(() => {
+            modalVictoryWord.textContent = hangman.currentWord;
+            modalVictoryComment.textContent = hangman.currentWordObj.funnyComment || "You saved Bob with flying colors!";
+            victoryModal.classList.add("open");
+          }, 500);
+        } else if (res.gameOver) {
+          setTimeout(() => {
+            modalDefeatWord.textContent = hangman.currentWord;
+            modalDefeatComment.textContent = hangman.currentWordObj.funnyComment || "Better luck next round!";
+            defeatModal.classList.add("open");
+          }, 500);
+        }
+      }
+
+      function renderHUD() {
+        hudLives.textContent = `${hangman.livesLeft} / ${hangman.maxLives}`;
+        hudStreak.textContent = hangman.stats.streak;
+        hudWins.textContent = hangman.stats.wins;
+        hudLevel.textContent = hangman.currentLevel;
+      }
+
+      // Physical keyboard listener
+      window.addEventListener("keydown", (e) => {
+        if (victoryModal.classList.contains("open") || defeatModal.classList.contains("open") || statsModal.classList.contains("open")) return;
+        const key = e.key.toUpperCase();
+        if (/^[A-Z]$/.test(key)) {
+          handleGuess(key);
+        }
+      });
+
+      // Level selector
+      levelPills.forEach(pill => {
+        pill.addEventListener("click", () => {
+          audio.playPop();
+          levelPills.forEach(p => p.classList.remove("active"));
+          pill.classList.add("active");
+          const lvl = pill.getAttribute("data-level");
+          hangman.initGame(lvl);
+          renderRound();
+        });
+      });
+
+      newWordBtn.addEventListener("click", () => {
+        audio.playPop();
+        hangman.startNewRound();
+        renderRound();
+      });
+
+      vowelHintBtn.addEventListener("click", () => {
+        const res = hangman.revealHintVowel();
+        if (res) {
+          renderRound();
+          if (res.won) {
+            setTimeout(() => {
+              modalVictoryWord.textContent = hangman.currentWord;
+              modalVictoryComment.textContent = hangman.currentWordObj.funnyComment;
+              victoryModal.classList.add("open");
+            }, 500);
+          }
+        }
+      });
+
+      // Modals
+      modalVictoryNextBtn.addEventListener("click", () => {
+        audio.playPop();
+        victoryModal.classList.remove("open");
+        hangman.startNewRound();
+        renderRound();
+      });
+      modalVictoryCloseBtn.addEventListener("click", () => {
+        audio.playPop();
+        victoryModal.classList.remove("open");
+      });
+
+      modalDefeatRetryBtn.addEventListener("click", () => {
+        audio.playPop();
+        defeatModal.classList.remove("open");
+        hangman.startNewRound();
+        renderRound();
+      });
+      modalDefeatCloseBtn.addEventListener("click", () => {
+        audio.playPop();
+        defeatModal.classList.remove("open");
+      });
+
+      // Stats
+      statsModalBtn.addEventListener("click", () => {
+        audio.playPop();
+        document.getElementById("stat-total-wins").textContent = hangman.stats.wins;
+        document.getElementById("stat-max-streak").textContent = hangman.stats.maxStreak;
+        document.getElementById("stat-total-losses").textContent = hangman.stats.losses;
+
+        const grid = document.getElementById("stat-levels-breakdown");
+        grid.innerHTML = "";
+        ["A1", "A2", "B1", "B2", "C1", "C2"].forEach(lvl => {
+          const count = hangman.stats.levelWins[lvl] || 0;
+          const box = document.createElement("div");
+          box.style.cssText = "background: #fdf0f5; border: 1.5px solid #ffd1dc; border-radius: 12px; padding: 10px; text-align: center;";
+          box.innerHTML = `
+            <div style="font-weight: 800; font-family: 'Fredoka'; color: #f72585;">${lvl}</div>
+            <div style="font-size: 1.15rem; font-weight: 700;">${count} Won</div>
+          `;
+          grid.appendChild(box);
+        });
+
+        statsModal.classList.add("open");
+      });
+
+      statsCloseBtn.addEventListener("click", () => {
+        audio.playPop();
+        statsModal.classList.remove("open");
+      });
+
+      // Sound
+      soundToggleBtn.addEventListener("click", () => {
+        const isMuted = audio.toggleMute();
+        updateAudioIcon();
+        if (!isMuted) audio.playPop();
+      });
+
+      function updateAudioIcon() {
+        if (audio.isMuted()) {
+          soundIcon.textContent = "🔇";
+          soundToggleBtn.title = "Unmute Sound Effects";
+        } else {
+          soundIcon.textContent = "🔊";
+          soundToggleBtn.title = "Mute Sound Effects";
+        }
+      }
+
+      // Copy Address Link
+      function showToast(msg) {
+        if (!appToast) return;
+        appToast.textContent = msg;
+        appToast.classList.add("show");
+        setTimeout(() => appToast.classList.remove("show"), 2800);
+      }
+
+      function copyLink() {
+        const url = "https://panizteacher.com/hangman";
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(() => {
+            audio.playPop();
+            showToast("✨ Copied: https://panizteacher.com/hangman");
+          });
+        } else {
+          showToast("✨ https://panizteacher.com/hangman");
+        }
+      }
+
+      if (copyAddressBtn) copyAddressBtn.addEventListener("click", copyLink);
+      if (copyUrlBtn) copyUrlBtn.addEventListener("click", (e) => { e.stopPropagation(); copyLink(); });
+    });
+  </script>
+</body>
+</html>
