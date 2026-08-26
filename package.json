@@ -1,0 +1,20 @@
+{
+  "name": "who-am-i-panizteacher",
+  "version": "1.0.0",
+  "description": "CEFR Guessing Game & Funny Pastel Hangman by Paniz (@panizteacher)",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "cefr",
+    "english",
+    "learning",
+    "game",
+    "hangman",
+    "who-am-i",
+    "panizteacher"
+  ],
+  "author": "Paniz",
+  "license": "MIT"
+}
