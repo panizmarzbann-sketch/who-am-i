@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paniz Marzban | Who Am I? What Am I? • CEFR Game</title>
+  <meta name="description" content="Official 'Who Am I? What Am I?' CEFR Language Game created by Paniz Marzban featuring A1-C2 levels, foods, jobs, objects, and concepts.">
+  <meta name="author" content="Paniz Marzban">
+  <meta name="creator" content="Paniz Marzban">
+  <meta property="og:title" content="Who Am I? What Am I? • Created by Paniz Marzban">
+  <meta property="og:description" content="Play the ultimate guessing game by Paniz Marzban across CEFR levels A1 to C2!">
+  <meta property="og:url" content="https://panizmarzban.com/who-am-i">
+  <meta property="og:type" content="website">
+  
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+</head>
+<body>
+
+  <!-- Ambient Floating Background Blobs -->
+  <div class="ambient-background">
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+    <div class="ambient-blob blob-4"></div>
+  </div>
+
+  <!-- Particle Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-container">
+    
+    <!-- ==========================================
+         TOP WEBSITE ADDRESS / DOMAIN BAR
+    ========================================== -->
+    <div class="address-browser-bar">
+      <div class="browser-dots">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <div class="browser-address-field" id="copy-address-btn" title="Click to copy official website address">
+        <span class="lock-icon">🔒</span>
+        <span class="url-protocol">https://</span>
+        <span class="url-host">panizteacher.com</span>
+        <span class="url-path">/who-am-i</span>
+        <button class="copy-url-mini-btn" id="copy-url-btn">📋 Copy Link</button>
+      </div>
+      <div class="top-game-switcher">
+        <a href="index.html" class="game-switch-tab active">🔍 Who Am I?</a>
+        <a href="hangman.html" class="game-switch-tab">🪅 Hangman</a>
+      </div>
+      <button class="domain-info-btn" id="domain-info-btn" title="Website Hosting & Domain Setup">
+        🌐 Info
+      </button>
+    </div>
+
+    <!-- ==========================================
+         MAIN HEADER & PROMINENT BRANDING
+    ========================================== -->
+    <header class="main-header">
+      <div class="header-top">
+        <div class="brand-section">
+          <div class="logo-badge">🌸</div>
+          <div class="brand-text">
+            <div class="author-tag-banner">
+              <span class="sparkle-icon">✨</span>
+              <span>WEB DESIGNER: <strong>PANIZ</strong> • <a href="https://panizteacher.com" target="_blank" style="color: #4361ee; text-decoration: none; font-weight: 800;">@panizteacher</a></span>
+              <span class="sparkle-icon">✨</span>
+            </div>
+            <h1>Who Am I? What Am I?</h1>
+            <p class="brand-subtitle">
+              CEFR Language & Deduction Game • Master Levels A1 through C2 • by Paniz
+            </p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button id="sound-toggle-btn" class="icon-btn" title="Toggle Sound Effects">
+            <span id="sound-icon">🔊</span> Sound
+          </button>
+          <button id="stats-modal-btn" class="icon-btn" title="View Game Stats">
+            📊 Stats
+          </button>
+          <button id="cert-modal-btn" class="icon-btn" title="View Certificate of Mastery">
+            📜 Certificate
+          </button>
+          <button id="add-card-modal-btn" class="icon-btn primary" title="Create a Custom Card">
+            ➕ Add Card
+          </button>
+        </div>
+      </div>
+
+      <!-- HUD Stats Banner -->
+      <div class="stats-banner">
+        <div class="stat-item">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-info">
+            <span class="stat-label">Total Score</span>
+            <span id="hud-score" class="stat-value">0</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-info">
+            <span class="stat-label">Streak</span>
+            <span id="hud-streak" class="stat-value">0</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-info">
+            <span class="stat-label">Cards Solved</span>
+            <span id="hud-solved" class="stat-value">0</span>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon">🎓</div>
+          <div class="stat-info">
+            <span class="stat-label">Current Level</span>
+            <span id="hud-level" class="stat-value">All</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==========================================
+         CEFR LEVEL NAVIGATOR (A1 -> C2)
+    ========================================== -->
+    <nav class="cefr-navigator">
+      <div class="nav-title">
+        <span>📚 CEFR Language Proficiency Levels</span>
+        <span class="nav-hint">Select a level to filter vocabulary difficulty</span>
+      </div>
+      <div class="level-pills">
+        <button class="level-pill active" data-level="All">
+          <span class="pill-tag">ALL</span>
+          <span class="pill-desc">Full Mix</span>
+        </button>
+        <button class="level-pill" data-level="A1">
+          <span class="pill-tag">A1</span>
+          <span class="pill-desc">Beginner</span>
+        </button>
+        <button class="level-pill" data-level="A2">
+          <span class="pill-tag">A2</span>
+          <span class="pill-desc">Elementary</span>
+        </button>
+        <button class="level-pill" data-level="B1">
+          <span class="pill-tag">B1</span>
+          <span class="pill-desc">Intermediate</span>
+        </button>
+        <button class="level-pill" data-level="B2">
+          <span class="pill-tag">B2</span>
+          <span class="pill-desc">Upper-Int</span>
+        </button>
+        <button class="level-pill" data-level="C1">
+          <span class="pill-tag">C1</span>
+          <span class="pill-desc">Advanced</span>
+        </button>
+        <button class="level-pill" data-level="C2">
+          <span class="pill-tag">C2</span>
+          <span class="pill-desc">Mastery</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ==========================================
+         CONTROLS BAR: CATEGORIES & MODES
+    ========================================== -->
+    <section class="controls-bar">
+      <!-- Category Filter Chips -->
+      <div class="category-chips">
+        <button class="chip-btn active" data-category="all">✨ All Cards</button>
+        <button class="chip-btn" data-category="who">👤 Jobs & Characters</button>
+        <button class="chip-btn" data-category="foods">🍔 Foods & Drinks</button>
+        <button class="chip-btn" data-category="objects">📦 Objects & Tech</button>
+        <button class="chip-btn" data-category="animals">🐾 Animals & Nature</button>
+        <button class="chip-btn" data-category="concepts">💡 Concepts & Places</button>
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="mode-switcher">
+        <button class="mode-btn active" data-mode="detective">🔍 Detective</button>
+        <button class="mode-btn" data-mode="quiz">🎯 Quiz</button>
+        <button class="mode-btn" data-mode="speed">⚡ Blitz</button>
+        <button class="mode-btn" data-mode="party">🎪 Party</button>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         MAIN GAME ARENA
+    ========================================== -->
+    <main class="game-stage">
+      
+      <!-- MODE 1: CLUE DETECTIVE (DEFAULT) -->
+      <section id="detective-section" class="card-arena">
+        <div class="arena-header">
+          <div class="arena-meta">
+            <span id="card-badge-type" class="badge-type">👤 WHO AM I?</span>
+            <span id="card-badge-level" class="badge-level">CEFR A1</span>
+            <span class="badge-creator-pill">🌸 by Paniz Marzban</span>
+          </div>
+          <div id="card-points-potential" class="arena-score-counter">+100 pts</div>
+        </div>
+
+        <!-- Clues List (1-4) -->
+        <div id="clues-container" class="clues-grid">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Word Tiles & Letter Clues -->
+        <div class="word-discovery-area">
+          <span class="word-discovery-title">Letter Discovery Board</span>
+          <div id="letter-tiles-container" class="letter-tiles-container">
+            <!-- Tiles populated by JS -->
+          </div>
+          <div class="hint-actions">
+            <button id="hint-first-letter" class="hint-pill-btn">💡 Show 1st Letter</button>
+            <button id="hint-vowels" class="hint-pill-btn">🔤 Reveal Vowels</button>
+            <button id="hint-random" class="hint-pill-btn">🎲 Random Letter</button>
+          </div>
+        </div>
+
+        <!-- Guess Form -->
+        <form id="guess-form" class="guess-form">
+          <div class="guess-input-wrapper">
+            <span class="input-icon">🔍</span>
+            <input type="text" id="guess-input" class="guess-input" placeholder="Type your guess here (e.g. Teacher, Apple, Saffron)..." autocomplete="off" required>
+          </div>
+          <button type="submit" class="submit-guess-btn">✨ Check Answer</button>
+          <button type="button" id="next-card-btn" class="next-card-btn">Skip Card ⏩</button>
+        </form>
+      </section>
+
+      <!-- MODE 2: MULTIPLE CHOICE QUIZ -->
+      <section id="quiz-section" class="card-arena" style="display: none;">
+        <div class="arena-header">
+          <div class="arena-meta">
+            <span id="quiz-badge-type" class="badge-type">✨ WHAT AM I?</span>
+            <span id="quiz-badge-level" class="badge-level">CEFR B1</span>
+            <span class="badge-creator-pill">🌸 by Paniz Marzban</span>
+          </div>
+        </div>
+
+        <div id="quiz-clues-container" class="clues-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <div id="quiz-options-container" class="quiz-options-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+          <button id="quiz-next-btn" class="next-card-btn">Next Question ⏩</button>
+        </div>
+      </section>
+
+      <!-- MODE 3: SPEED BLITZ -->
+      <section id="speed-section" class="card-arena" style="display: none;">
+        <div class="speed-timer-display">
+          <span>⚡ 60-Second Rapid Challenge</span>
+          <span id="speed-timer-sec" style="font-family: 'Fredoka'; font-size: 1.3rem; color: var(--pink-500);">60s</span>
+        </div>
+        <div class="speed-bar-wrapper">
+          <div id="speed-bar-fill" class="speed-bar-fill"></div>
+        </div>
+
+        <div class="arena-meta" style="margin-top: 8px;">
+          <span id="speed-card-badge" class="badge-type">👤 WHO • CEFR A2</span>
+          <span class="badge-creator-pill">🌸 by Paniz Marzban</span>
+        </div>
+
+        <div id="speed-clues-container" class="clues-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <form id="speed-guess-form" class="guess-form">
+          <div class="guess-input-wrapper">
+            <span class="input-icon">⚡</span>
+            <input type="text" id="speed-guess-input" class="guess-input" placeholder="Quick guess..." autocomplete="off">
+          </div>
+          <button type="submit" class="submit-guess-btn">Submit</button>
+          <button type="button" id="speed-pass-btn" class="next-card-btn">Pass ⏩</button>
+        </form>
+      </section>
+
+      <!-- MODE 4: PARTY / PRESENTER MODE -->
+      <section id="party-section" class="party-arena" style="display: none;">
+        <div class="arena-meta">
+          <span id="party-badge-type" class="badge-type">👤 WHO AM I?</span>
+          <span id="party-badge-level" class="badge-level">CEFR B2</span>
+          <span class="badge-creator-pill">🌸 by Paniz Marzban</span>
+        </div>
+
+        <div class="party-clue-box">
+          <div id="party-clue-text">Clues loading...</div>
+        </div>
+
+        <div id="party-answer-box" class="party-secret-answer" style="display: none;">
+          ✨ Secret Answer
+        </div>
+
+        <div class="party-controls">
+          <button id="party-prev-btn" class="icon-btn">◀ Previous Card</button>
+          <button id="party-reveal-btn" class="icon-btn primary">👁️ Reveal Secret Answer</button>
+          <button id="party-next-btn" class="icon-btn">Next Card ▶</button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==========================================
+         FOOTER
+    ========================================== -->
+    <footer class="main-footer">
+      <div class="footer-left">
+        <span>✨ <strong>Who Am I? What Am I?</strong></span>
+        <span class="footer-separator">•</span>
+        <span>Designed & Created with 💖 by <span class="footer-author">Paniz Marzban</span></span>
+      </div>
+      <div class="footer-right">
+        <a href="https://panizmarzban.com" class="footer-link" target="_blank" rel="noopener">panizmarzban.com</a>
+        <span class="footer-separator">•</span>
+        <span>CEFR A1–C2 Language Master Suite</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ==========================================
+       TOAST NOTIFICATION
+  ========================================== -->
+  <div id="app-toast" class="app-toast">Link copied to clipboard! ✨</div>
+
+  <!-- ==========================================
+       MODAL 0: WEBSITE ADDRESS & DOMAIN SETUP INFO
+  ========================================== -->
+  <div id="domain-modal" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-emoji-header">🌐</div>
+      <h2 class="modal-title">Website Address & Hosting</h2>
+      <p style="font-size: 0.95rem; color: var(--text-muted);">
+        This official game is designed for <strong>Paniz Marzban</strong>. Here are the address URLs and how to host it under your name:
+      </p>
+
+      <div class="domain-card-list">
+        <div class="domain-card-item">
+          <div class="domain-badge-tag">Custom Domain</div>
+          <div class="domain-url-text">https://panizmarzban.com/who-am-i</div>
+          <p class="domain-sub-text">Your personal branded domain name</p>
+        </div>
+
+        <div class="domain-card-item">
+          <div class="domain-badge-tag">GitHub Pages (Free)</div>
+          <div class="domain-url-text">https://panizmarzban.github.io/who-am-i</div>
+          <p class="domain-sub-text">Instant 100% free hosting with your username</p>
+        </div>
+
+        <div class="domain-card-item">
+          <div class="domain-badge-tag">Vercel / Netlify (Free)</div>
+          <div class="domain-url-text">https://whoami-panizmarzban.vercel.app</div>
+          <p class="domain-sub-text">Free ultra-fast global CDN hosting</p>
+        </div>
+      </div>
+
+      <div class="modal-fact-box" style="margin-top: 10px;">
+        <h4>🚀 Quick Free Publishing Guide</h4>
+        <ol style="margin-left: 18px; font-size: 0.88rem; line-height: 1.6; color: var(--text-main);">
+          <li>Create a free account on <a href="https://github.com" target="_blank" style="color: var(--blue-500); font-weight: 700;">GitHub.com</a> with the username <code>panizmarzban</code>.</li>
+          <li>Create a repository named <code>who-am-i</code> and upload these project files.</li>
+          <li>Under <strong>Settings &rarr; Pages</strong>, choose <strong>Deploy from Branch (main)</strong>.</li>
+          <li>Your website goes live immediately at <strong><code>https://panizmarzban.github.io/who-am-i</code></strong>!</li>
+        </ol>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center; margin-top: 14px;">
+        <button id="copy-modal-url-btn" class="submit-guess-btn">📋 Copy panizmarzban.com Link</button>
+        <button id="domain-close-btn" class="next-card-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 1: VICTORY & FUN FACT MODAL
+  ========================================== -->
+  <div id="victory-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div id="modal-victory-emoji" class="modal-emoji-header">🎉</div>
+      <h2 class="modal-title">Brilliant Guess!</h2>
+      <div id="modal-victory-answer" style="font-size: 1.8rem; font-weight: 800; font-family: 'Fredoka'; color: var(--pink-500);">Doctor</div>
+      <div id="modal-victory-points" style="font-size: 1.1rem; font-weight: 700; color: #2d6a4f; background: var(--pastel-mint); display: inline-block; padding: 4px 16px; border-radius: 999px; margin: 0 auto;">+100 Points</div>
+      
+      <div class="modal-fact-box">
+        <h4>💡 Fun Fact</h4>
+        <p id="modal-victory-fact">Doctors have been practicing medicine for thousands of years!</p>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center; margin-top: 10px;">
+        <button id="modal-victory-next-btn" class="submit-guess-btn" style="padding: 12px 30px;">Next Card 🚀</button>
+        <button id="modal-victory-close-btn" class="next-card-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 2: USER STATS & CEFR BREAKDOWN
+  ========================================== -->
+  <div id="stats-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-emoji-header">📊</div>
+      <h2 class="modal-title">Learning Stats & Mastery</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+        <div style="background: var(--blue-50); border: 1.5px solid var(--blue-200); border-radius: 12px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">TOTAL SCORE</div>
+          <div id="stat-total-score" style="font-size: 1.6rem; font-weight: 800; font-family: 'Fredoka'; color: var(--blue-500);">0</div>
+        </div>
+        <div style="background: var(--pink-50); border: 1.5px solid var(--pink-200); border-radius: 12px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">MAX STREAK</div>
+          <div id="stat-max-streak" style="font-size: 1.6rem; font-weight: 800; font-family: 'Fredoka'; color: var(--pink-500);">0</div>
+        </div>
+        <div style="background: var(--pastel-mint); border: 1.5px solid #a7f3d0; border-radius: 12px; padding: 12px;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">SOLVED CARDS</div>
+          <div id="stat-cards-solved" style="font-size: 1.6rem; font-weight: 800; font-family: 'Fredoka'; color: #065f46;">0</div>
+        </div>
+      </div>
+
+      <h4 style="text-align: left; margin-top: 10px; font-size: 0.95rem;">CEFR Level Breakdown</h4>
+      <div id="stat-levels-breakdown" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+        <!-- Filled by JS -->
+      </div>
+
+      <button id="stats-close-btn" class="submit-guess-btn" style="margin-top: 12px;">Back to Game</button>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 3: CERTIFICATE OF MASTERY
+  ========================================== -->
+  <div id="cert-modal" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 640px; padding: 24px;">
+      <div class="certificate-container">
+        <div class="certificate-border-inner">
+          <div class="cert-badge-top">🏆</div>
+          <h2 class="cert-title">Certificate of Achievement</h2>
+          <div class="cert-sub">CEFR Language & Vocabulary Mastery</div>
+          
+          <div class="cert-recipient">Paniz Marzban</div>
+          
+          <p class="cert-desc">
+            In recognition of outstanding dedication, intellectual agility, and linguistic prowess across CEFR levels A1 through C2 in the game of <strong>"Who Am I? What Am I?"</strong>.
+          </p>
+
+          <div class="cert-signatures">
+            <div class="sig-item">
+              <div class="sig-script">Paniz Marzban</div>
+              <div class="sig-title">Author & Creator</div>
+            </div>
+            
+            <div class="cert-gold-seal">★</div>
+
+            <div class="sig-item">
+              <div class="sig-script">panizmarzban.com</div>
+              <div class="sig-title">Official Registry</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px;">
+        <button id="print-cert-btn" class="submit-guess-btn">🖨️ Print / Save Certificate</button>
+        <button id="cert-close-btn" class="next-card-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL 4: CUSTOM CARD CREATOR
+  ========================================== -->
+  <div id="creator-modal" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-emoji-header">✍️</div>
+      <h2 class="modal-title">Create a Custom Card</h2>
+      <p style="font-size: 0.88rem; color: var(--text-muted);">Add your own "Who Am I?" or "What Am I?" mystery card into the game!</p>
+
+      <form id="custom-card-form" class="creator-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Secret Answer *</label>
+            <input type="text" id="new-card-answer" class="form-input" placeholder="e.g. Astronomer or Croissant" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Card Type</label>
+            <select id="new-card-type" class="form-select">
+              <option value="who">👤 Who Am I? (Job / Role)</option>
+              <option value="what">✨ What Am I? (Object / Food / Concept)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="new-card-category" class="form-select">
+              <option value="jobs">Jobs & Professions</option>
+              <option value="foods">Foods & Drinks</option>
+              <option value="objects">Objects & Gadgets</option>
+              <option value="animals">Animals & Nature</option>
+              <option value="concepts">Concepts & Places</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">CEFR Level</label>
+            <select id="new-card-level" class="form-select">
+              <option value="A1">A1 (Beginner)</option>
+              <option value="A2">A2 (Elementary)</option>
+              <option value="B1" selected>B1 (Intermediate)</option>
+              <option value="B2">B2 (Upper-Intermediate)</option>
+              <option value="C1">C1 (Advanced)</option>
+              <option value="C2">C2 (Proficiency / Mastery)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Emoji Icon</label>
+          <input type="text" id="new-card-emoji" class="form-input" placeholder="e.g. 🥐, 🔭, 👨‍🚀" maxlength="4">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Clue #1 (General / Engaging) *</label>
+          <input type="text" id="new-card-clue1" class="form-input" placeholder="e.g. I work at night studying distant lights." required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Clue #2 (Descriptive) *</label>
+          <input type="text" id="new-card-clue2" class="form-input" placeholder="e.g. I use large optical telescopes." required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Clue #3 (Specific)</label>
+          <input type="text" id="new-card-clue3" class="form-input" placeholder="e.g. I calculate orbits of comets and planets.">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Clue #4 (Dead Giveaway)</label>
+          <input type="text" id="new-card-clue4" class="form-input" placeholder="e.g. My title begins with Astro-.">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Educational Fun Fact</label>
+          <textarea id="new-card-fact" class="form-textarea" rows="2" placeholder="e.g. Galileo was one of the earliest astronomers..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 10px;">
+          <button type="button" id="creator-close-btn" class="next-card-btn">Cancel</button>
+          <button type="submit" class="submit-guess-btn">Save & Play Card ✨</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/cards-data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
